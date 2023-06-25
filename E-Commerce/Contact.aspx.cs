@@ -22,7 +22,23 @@ namespace E_Commerce
             subCategoryList.DataValueField = "SubCategoryId";
             subCategoryList.DataBind();
         }
+        protected void addCategory_Click(object sender, EventArgs e)
+        {
+            //var category = new Category()
+            //{
+            //    CreatedAt = DateTime.Now,
+            //    Ar_Name = catArName.Value,
+            //    En_Name = catEnName.Value,
+            //    Image = catImg.FileName
+            //};
+            //catImg.SaveAs(Server.MapPath("~/Images/") + System.IO.Path.GetFileName(catImg.FileName));
+            //using (OnlineShop _OnlineShop = new OnlineShop())
+            //{
+            //    _OnlineShop.Categories.Add(category);
+            //    _OnlineShop.SaveChanges();
+            //}
 
+        }
         private List<Category> CreateDataSource()
         {
             List<Category> categories = new List<Category>();
@@ -45,6 +61,8 @@ namespace E_Commerce
             }
             return suCategories;
        }
+
+        
     }
 
     

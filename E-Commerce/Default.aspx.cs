@@ -10,6 +10,10 @@ using System.Web.Services;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.Script.Services;
+using Microsoft.AspNet.FriendlyUrls;
+using System.IO;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace E_Commerce
 {
@@ -43,7 +47,7 @@ namespace E_Commerce
                 En_Name = catEnName,
                 Image = catImg
             };
-
+           
             using (OnlineShop _OnlineShop = new OnlineShop())
             {
                 _OnlineShop.Categories.Add(category);
@@ -104,7 +108,7 @@ namespace E_Commerce
         }
 
         [WebMethod]
-        public static Product EditProduct(int productId, string arName, string enName, string fileImg, int subCategoryId, string price, string discount, string description, int quantity)
+        public static void EditProduct(int productId, string arName, string enName, string fileImg, int subCategoryId, string price, string discount, string description, int quantity)
         {
             var disValue = discount == null || discount == "" ? "0" : discount;
 
@@ -128,8 +132,6 @@ namespace E_Commerce
                 }
             }
 
-
-            return product;
         }
         [WebMethod]
         public static Product GetProductById(int productId)
@@ -146,7 +148,7 @@ namespace E_Commerce
         }
 
         [WebMethod]
-        public static Product DeleteProduct(int productId)
+        public static void DeleteProduct(int productId)
         {
 
             var product = new Product();
@@ -157,13 +159,11 @@ namespace E_Commerce
                 {
 
                     oldProduct.Isdeleted = true;
-                    _OnlineShop.SaveChanges();
+                    var x = _OnlineShop.SaveChanges();
                     product = oldProduct;
                 }
             }
 
-
-            return product;
         }
 
         [WebMethod]
@@ -201,5 +201,6 @@ namespace E_Commerce
             }
             return products;
         }
+
     }
 }

@@ -15,24 +15,28 @@
             <div class="row m-2">
                <div class="form-group col-6">
                    <label>Arabic Name</label>
-                   <input id="catArName" type="text" class="form-control"/>
+                   <input id="catArName" type="text" class="form-control" />
                </div>
                <div class="form-group col-6">
                     <label>English Name</label>
-                   <input  id="catEnName" type="text" class="form-control"/>
+                   <input  id="catEnName" type="text" class="form-control" />
                </div>
            </div>
 
             <div class="row m-2">
                <div class="form-group col-6">
                    <label>Image</label>
-                   <input id="catImg" type="file" class="form-control" />
+                   <%--<asp:FileUpload ID="catImg" class="form-control" runat="server" />--%>
+                   <input id="catImg" type="file" class="form-control"/>
                </div>
               
            </div>
             
              <div class="row m-2">
-                <input type="button" class="form-control w-25 offset-3 btn-info bg-info" value="Add Category" id="addCategory"/>
+               <%--  <asp:Button  runat="server" OnClick="Unnamed_Click"
+                    class="form-control w-25 offset-3 btn-info bg-info" text="Add Category" ID="addCategorybtn"/>--%>
+                <input type="button"
+                    class="form-control w-25 offset-3 btn-info bg-info" value="Add Category" id="addCategory"/>
            </div>
         </div>
           <hr />
@@ -132,6 +136,7 @@
 
         //add category
         $("#addCategory").on("click", function () {
+           
             if ($("#catArName").val() === "" || $("#catEnName").val() === "" || $("#catImg").val() === "") {
                 alert("Plz Fill all Inputs")
                 return;
@@ -155,6 +160,7 @@
                     $("#catEnName").val("");
                     $("#catImg").val("");
                     alert("New Category Added Successfully ^_^");
+                    uploadImage("catImg");
                     location.reload();
                 },
                 error: function (e) {
@@ -163,13 +169,31 @@
             });
         });
 
+        //save image
+        function uploadImage(elementId) {
+
+            fileInput = document.getElementById(elementId);
+            const file = fileInput.files[0];
+
+            const formData = new FormData();
+            formData.append('Images', file);
+
+            const xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    req.open("POST", '~/Images');
+                    req.send(formData);
+                }
+            };
+        }
+       
         //add product
         $("#addProductItem").on("click", function () {
-            debugger;
             if ($("#arName").val() === "" || $("#enName").val() === "" || $("#img").val() === "" || $("#price").val() === "" || $("#description").val() === "" || $("#quantity").val() === "") {
                 alert("Plz Fill all Inputs")
                 return;
             }
+
             var getImgName = $("#img").val().split("\\");
             var imgName = `/Images/${getImgName[getImgName.length - 1]}`
 
@@ -194,6 +218,7 @@
                     $("#enName").val("");
                     $("#img").val("");
                     alert("New Product Successfully ^_^");
+                    uploadImage("img");
                     location.reload();
                 },
                 error: function (e) {
@@ -228,6 +253,7 @@
                     $("#SubEnName").val("");
                     $("#subFileImg").val("");
                     alert("New SubCategory Added Successfully ^_^");
+                    uploadImage("subFileImg");
                     location.reload();
                 },
                 error: function (e) {

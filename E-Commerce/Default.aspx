@@ -4,6 +4,7 @@
 
     <main>
          <div class="row">
+             
              <asp:Repeater runat="server" ID="Products">
                  <ItemTemplate>
                      <div class="text-center card col-3 m-5">
@@ -11,13 +12,15 @@
                              <asp:HyperLink runat="server">
                                  <img class="w-50" src="<%# ResolveUrl(Convert.ToString(Eval("Image"))) %>"/>
                              </asp:HyperLink>
+                             <img src="Images/delete.png" style="width:20px" onclick="deleteItem('<%# Eval("ProductId") %>')"/>
+                             
                          </div>
                          
                          <div class="card-body">
-                             <asp:HyperLink  runat="server" NavigateUrl="https://www.linkedin.com/in/esraasami20/">
-                                 <%# Eval("En_Name") %>
-                             </asp:HyperLink>
-                            <%--<%# Eval("ProductId","~/About.aspx?id={0}") %>--%>
+                            
+                             <div class="card-body">
+                            <asp:HyperLink runat="server" NavigateUrl='<%# Eval("ProductId", "~/About.aspx?id={0}") %>' Text='<%# Eval("En_Name") %>' />
+                        </div>
                          </div>
                          <div class="card-footer">
                                  <%# Eval("Price", "{0:#,###}") %> LE
@@ -28,21 +31,26 @@
         </div>
     </main>
     <script>
-        $(document).ready(function () {
-            //$.ajax({
-            //    type:"GET",
-            //    url: "Default.aspx/GetCategories",
-            //    contentType: 'application/json; charset=utf-8',
-            //    success: function (result) {
-            //        console.log(result)
-            //        alert(result)
-            //    },
-            //    error: function (e) {
-            //        console.log(e)
-            //    }
+     
+        function deleteItem(id) {
+            data = {
+                productId: id
+            }
 
-            //});
-        });
-        
+            $.ajax({
+                type: "POST",
+                url: "Default.aspx/DeleteProduct",
+                data: JSON.stringify(data),
+                contentType: 'application/json; charset=utf-8',
+                success: function (result) {
+
+                    alert("Item Deleted Successfully ^_^");
+                    location.reload();
+                },
+                error: function (e) {
+                    console.log(e)
+                }
+            });
+        }
     </script>
 </asp:Content>
